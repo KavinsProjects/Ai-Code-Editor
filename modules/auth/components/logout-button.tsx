@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { LogoutButtonProps } from "@/modules/types"
+import { LogoutButtonProps } from "@/modules/dashboard/types"
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react';
 
