@@ -4,6 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "@/components/provider/theme-provider"
+ 
 
 const jetbrainsMono = JetBrains_Mono({subsets:['latin'],variable:'--font-mono'});
 
@@ -28,10 +30,18 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-mono", jetbrainsMono.variable)}
     >
       <body className="min-h-full flex flex-col">
-        <SessionProvider session={session}>{children}</SessionProvider>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+          <SessionProvider session={session}>{children}</SessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
