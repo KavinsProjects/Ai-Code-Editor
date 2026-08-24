@@ -1,21 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import React from "react";
 import "@/app/globals.css"
-import { auth } from "@/auth";
-import { Session } from "inspector/promises";
-import { SessionProvider } from "next-auth/react";
-
-
-const geisSant = Geist({
-    variable : "--font-geist-sans",
-    subsets : ["latin"],
-});
-
-const geistMono = Geist_Mono    ({
-    variable : "--font-geist-sans",
-    subsets : ["latin"],
-});
 
 
 export const metadata : Metadata = {
@@ -29,17 +14,8 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
 
-    const session = await auth()
-
     return(
-        <SessionProvider session={session} >
-            <html  lang="eng">
-                <body>
-                    className={`${geisSant.variable} ${geistMono.variable} antialisted`}
-                    {children}
-                </body>
-            </html>
-            </SessionProvider>
+        children
     )
 }
 

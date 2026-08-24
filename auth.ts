@@ -1,17 +1,19 @@
 import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import authConfig from "./auth.config";
-import { db } from "./lib/db";
+import clientPromise from "./lib/mongodb";
 import { getUserById } from "./modules/action";
 import type { UserRole } from "@prisma/client";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  session: { strategy: "jwt" },
+
   callbacks: {
     async signIn({ user, account }) {
       if (!user || !account || !user.email) {
         return false;
       }
-      // Let PrismaAdapter handle user and account creation
+      // Let the MongoDB adapter handle user and account creation
       // Just return true to allow sign-in
       return true;
     },
@@ -34,15 +36,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
 
-    async session({ session, token }) {
+    async session({ session, token, user }) {
+      const userId = user?.id ?? token?.sub;
+
       // Attach user ID to session
-      if (token.sub && session.user) {
-        session.user.id = token.sub;
+      if (userId && session.user) {
+        session.user.id = userId;
       }
 
       // Attach user role to session
-      if (token.role && session.user) {
-        session.user.role = token.role as UserRole;
+      const role = (user as { role?: UserRole } | undefined)?.role ?? token?.role;
+      if (role && session.user) {
+        session.user.role = role as UserRole;
       }
 
       return session;
@@ -51,7 +56,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
   secret: process.env.AUTH_SECRET,
 
-  adapter: PrismaAdapter(db),
+  adapter: MongoDBAdapter(clientPromise),
 
   ...authConfig,
 });
