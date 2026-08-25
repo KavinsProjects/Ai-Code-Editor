@@ -1,4 +1,3 @@
-
 "use client"
 
 import Image from "next/image"
@@ -81,9 +80,9 @@ export default function ProjectTable({
   const [editData, setEditData] = useState<EditProjectData>({ title: "", description: "" })
   const [isLoading, setIsLoading] = useState(false)
   const [favoutrie, setFavourite] = useState(false)
-  
+
   const handleEditClick = (project: Project) => {
-//    Write your logic here
+    //    Write your logic here
   }
 
   const handleDeleteClick = async (project: Project) => {
@@ -91,15 +90,15 @@ export default function ProjectTable({
   }
 
   const handleUpdateProject = async () => {
-   //    Write your logic here
+    //    Write your logic here
   }
 
   const handleMarkasFavorite = async (project: Project) => {
-   //    Write your logic here
+    //    Write your logic here
   }
 
   const handleDeleteProject = async () => {
-   //    Write your logic here
+    //    Write your logic here
   }
 
   const handleDuplicateProject = async (project: Project) => {
@@ -128,7 +127,7 @@ export default function ProjectTable({
               <TableRow key={project.id}>
                 <TableCell className="font-medium">
                   <div className="flex flex-col">
-                    <Link href={} className="hover:underline">
+                    <Link href={`/playground/${project.id}`} className="hover:underline">
                       <span className="font-semibold">{project.title}</span>
                     </Link>
                     <span className="text-sm text-gray-500 line-clamp-1">{project.description}</span>
